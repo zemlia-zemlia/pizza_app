@@ -13,6 +13,16 @@
 
 <body>
 
+<p>
+{{ user }}
+</p>
+<p>
+
+
+{% if user.is_anonymous %}
+    <a href="{% url 'auth_app:register' %}">Register</a>
+    {% endif %}
+</p>
 
   <main>
     {% block content %}

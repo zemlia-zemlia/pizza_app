@@ -1,4 +1,4 @@
-from django.core.urlresolvers import reverse
+from django.urls import reverse
 from django.db import transaction
 from django.db.models import Avg, Count, F
 from django.http import HttpResponse, Http404
@@ -53,11 +53,17 @@ def view(request, pizza_order_id):
     if request.method == 'GET':
         # pizza = get_object_or_404(PizzaOrder, id=pizza_order_id)
 
-        pizza = PizzaOrder.objects.select_related().prefetch_related(
-            'extra', 'exclude'
-        ).filter(
-            id=pizza_order_id
-        ).first()
+        #pizza = PizzaOrder.objects.filter(id=pizza_order_id).first()
+        #pizza = PizzaOrder.objects.select_related().filter(id=pizza_order_id).first()
+        pizza = PizzaOrder.objects.select_related('kind').filter(id=pizza_order_id).first()
+        # pizza = PizzaOrder.objects.select_related()\
+        #     .prefetch_related()\
+        #     .filter(id=pizza_order_id)\
+        #     .first()
+        # pizza = PizzaOrder.objects\
+        #     .select_related()\
+        #     .prefetch_related('extra', 'exclude')\
+        #     .filter(id=pizza_order_id).first()
 
         if not pizza:
             raise Http404

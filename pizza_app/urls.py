@@ -1,12 +1,14 @@
-from django.conf.urls import url
+from django.urls import path
 
 from pizza_app.views import create, view, close, stats
 
-urlpatterns = [
-    url(r'^create/', create, name='create'),
-    # view/<int:pizza_order_id>
-    url(r'^view/(?P<pizza_order_id>[0-9]+)/', view, name='view'),
-    url(r'^close/(?P<pizza_order_id>[0-9]+)/', close, name='close'),
+app_name = 'pizza_app'
 
-    url(r'^stats/', stats, name='stats'),
+urlpatterns = [
+    path('create/', create, name='create'),
+    # # view/<int:pizza_order_id>
+    path('view/<int:pizza_order_id>/', view, name='view'),
+    path('close/<int:pizza_order_id>/', close, name='close'),
+    #
+    path('stats/', stats, name='stats'),
 ]

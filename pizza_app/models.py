@@ -50,11 +50,18 @@ class PizzaOrderManager(Manager):
         )
 
 
+class PizzaOrderUndeliveredManager(Manager):
+    def get_queryset(self, **kwargs):
+        return super().get_queryset().filter(
+            delivered=False,
+        )
+
+
 class PizzaOrder(models.Model):
     # Linking:
-    kind = models.ForeignKey('PizzaMenuItem', related_name='pizzas')
-    size = models.ForeignKey('PizzaSize', related_name='pizzas')
-    delivery = models.ForeignKey('Address', related_name='pizzas')
+    kind = models.ForeignKey('PizzaMenuItem', related_name='pizzas', on_delete=models.PROTECT)
+    size = models.ForeignKey('PizzaSize', related_name='pizzas', on_delete=models.PROTECT)
+    delivery = models.ForeignKey('Address', related_name='pizzas', on_delete=models.PROTECT)
 
     # Buisness logic:
     extra = models.ManyToManyField(
@@ -64,11 +71,14 @@ class PizzaOrder(models.Model):
 
     # Utils:
     delivered = models.BooleanField(default=False)
-    date_created = models.DateTimeField(default=timezone.now)
+    date_created = models.DateTimeField(auto_now_add=True)
     date_delivered = models.DateTimeField(default=None, null=True)
 
     objects = Manager()
     delivered_manager = PizzaOrderManager()
+    undelivered_manager = PizzaOrderUndeliveredManager()
+
+
 
     def mark_delivered(self, commit=True):
         self.delivered = True

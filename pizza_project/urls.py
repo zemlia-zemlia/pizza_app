@@ -15,23 +15,25 @@ Including another URLconf
 """
 
 from django.conf import settings
-from django.conf.urls import url, include
 from django.contrib import admin
+from django.urls import path, include
 
 from pizza_app import urls as pizza_urls
+from pizza_auth_app import urls as pizza_auth_urls
 from pizza_app.views import index
 
 urlpatterns = [
-    url(r'^admin/', admin.site.urls),
+    path('admin/', admin.site.urls),
 
-    url(r'^pizza/', include(pizza_urls, namespace='pizza')),
+    path('auth/', include(pizza_auth_urls, namespace='auth_app')),
+    path('pizza/', include(pizza_urls, namespace='pizza')),
 
-    url(r'^$', index, name='index'),
+    path('', index, name='index'),
 ]
 
 
 if settings.DEBUG:
     import debug_toolbar
     urlpatterns += [
-        url(r'^__debug__/', include(debug_toolbar.urls)),
+        path('__debug__/', include(debug_toolbar.urls)),
     ]
