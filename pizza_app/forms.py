@@ -4,6 +4,7 @@ from django import forms
 from django.core.exceptions import ValidationError
 
 from pizza_app.models import PizzaOrder, Address
+from pizza_auth_app.models import CustomUser
 
 
 class DeliveryForm(forms.ModelForm):
@@ -15,6 +16,7 @@ class DeliveryForm(forms.ModelForm):
 
 
 class PizzaOrderForm(forms.ModelForm):
+
     class Meta:
         model = PizzaOrder
         exclude = [
@@ -22,11 +24,15 @@ class PizzaOrderForm(forms.ModelForm):
             'date_created',
             'date_delivered',
             'delivery',
+            'user',
         ]
 
+
     def clean(self):
+
         data = self.cleaned_data
         excluded = data['exclude']
+        print(data)
 
         errors = []
         for item in excluded:
@@ -47,6 +53,8 @@ class PizzaOrderForm(forms.ModelForm):
 
         inst = super().save(commit=False)
         inst.delivery = delivery
+        if self.user:
+            inst.user = CustomUser.objects.get(id=self.user)
 
         if commit:
             inst.save()

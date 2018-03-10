@@ -29,6 +29,7 @@ def create(request):
 
     elif request.method == 'POST':
         pizza_form = PizzaOrderForm(request.POST)
+        pizza_form.user = request.user.id
         delivery_from = DeliveryForm(request.POST)
 
         if pizza_form.is_valid() and delivery_from.is_valid():
@@ -37,8 +38,11 @@ def create(request):
                 pizza = pizza_form.save(delivery=delivery)
                 pizza_form.save_m2m()
 
+
+
             return redirect(reverse('pizza:view', kwargs={
-                'pizza_order_id': pizza.pk
+                'pizza_order_id': pizza.pk,
+
             }))
         else:
             c = {

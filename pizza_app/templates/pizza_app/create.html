@@ -12,6 +12,7 @@
 
     <h2>Pizza</h2>
     {{ pizza_form.as_p }}
+    <input type="hidden" value="{{ user.id }}" name="user_id">
 
     <input type="submit" value="Submit" />
 </form>

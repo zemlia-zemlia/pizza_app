@@ -2,6 +2,7 @@ from django.conf import settings
 from django.db import models
 from django.db.models import Manager
 from django.utils import timezone
+
 from django.db.models.signals import post_save, m2m_changed
 from django.utils.text import get_valid_filename
 
@@ -63,6 +64,10 @@ class PizzaOrder(models.Model):
     kind = models.ForeignKey('PizzaMenuItem', related_name='pizzas', on_delete=models.PROTECT)
     size = models.ForeignKey('PizzaSize', related_name='pizzas', on_delete=models.PROTECT)
     delivery = models.ForeignKey('Address', related_name='pizzas', on_delete=models.PROTECT)
+    user = models.ForeignKey(
+        settings.AUTH_USER_MODEL, on_delete=models.PROTECT, blank=True, null=True,
+        default=None, related_name='+',
+    )
 
     # Buisness logic:
     extra = models.ManyToManyField(
@@ -80,6 +85,12 @@ class PizzaOrder(models.Model):
     undelivered_manager = PizzaOrderUndeliveredManager()
 
 
+    # self.user = user.id
+    # def get_user(self):
+    #     return au
+
+
+
 
     def mark_delivered(self, commit=True):
         self.delivered = True
@@ -88,7 +99,10 @@ class PizzaOrder(models.Model):
             self.save()
 
     def save(self, **kwargs):
+
+
         if not self.pk:
+            # print(request.user.is_authenticated())
             print('Creating new PizzaOrder!')
         else:
             print('Updating the existing one')
