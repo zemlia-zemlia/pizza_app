@@ -41,9 +41,13 @@ INSTALLED_APPS = [
     # debug:
     'debug_toolbar',
 
+    #rest
+    'rest_framework',
+
 
 
     # my apps:
+    'rest_api_app',
     'pizza_app',
     'pizza_auth_app',
 ]

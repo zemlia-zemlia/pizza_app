@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-from django.conf.urls import url, include
+from django.urls import path, include
 
 from rest_framework import routers
 
@@ -12,9 +12,9 @@ from rest_api_app.rest_classes.views import (
 app_name = 'rest_api_app'
 
 router = routers.DefaultRouter()
-router.register(r'users', UserViewSet)
-router.register(r'pizzamenuitem', PizzaMenuItemViewSet)
+router.register('users', UserViewSet)
+router.register('pizzamenuitem', PizzaMenuItemViewSet)
 
 urlpatterns = [
-    url(r'^', include(router.urls)),
+    path('', include(router.urls)),
 ]

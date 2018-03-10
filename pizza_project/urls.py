@@ -20,13 +20,16 @@ from django.urls import path, include
 
 from pizza_app import urls as pizza_urls
 from pizza_auth_app import urls as pizza_auth_urls
+from rest_api_app import urls as rest_urls
 from pizza_app.views import index
+
 
 urlpatterns = [
     path('admin/', admin.site.urls),
 
     path('auth/', include(pizza_auth_urls, namespace='auth_app')),
     path('pizza/', include(pizza_urls, namespace='pizza')),
+    path('api/', include(rest_urls, namespace='rest_app')),
 
     path('', index, name='index'),
 ]
