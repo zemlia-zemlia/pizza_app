@@ -54,7 +54,8 @@ class PizzaOrderUndeliveredManager(Manager):
     def get_queryset(self, **kwargs):
         return super().get_queryset().filter(
             delivered=False,
-        )
+        )\
+
 
 
 class PizzaOrder(models.Model):
